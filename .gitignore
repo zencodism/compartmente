@@ -1,3 +1,4 @@
+manage.py
 *.pyc
 venv/
 *.sqlite3
