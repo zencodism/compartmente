@@ -1,4 +1,3 @@
-from django.contrib import admin
 from django.db import connections, models
 from django.apps import apps
 from django.db import connection
@@ -43,5 +42,4 @@ def create_model(
     except Exception:
         pass
 
-    admin.site.register(model)
     return model
