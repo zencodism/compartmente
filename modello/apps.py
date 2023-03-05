@@ -1,10 +1,12 @@
 from django.apps import AppConfig
 
-# from .models import Product, Site
+# from .views import make_sample_model, reload_urlconf
 
 class ModelloConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
     name = 'modello'
 
     def ready(self):
-        print("Wat.")
+        # make_sample_model()
+        # reload_urlconf()
+        pass

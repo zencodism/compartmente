@@ -16,19 +16,9 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from django.conf import settings
+from modello.views import maker_view
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('make', maker_view)
 ]
-
-from modello.models import *
-from modello.modello import create_model
-DummyProduct = create_model("DummyProduct", parent=Product, label="modello")
-print(DummyProduct.objects.count())
-
-DummySite = create_model("DummySite", parent=Site, label="modello")
-print(DummySite.objects.count())
-
-SecondOne = create_model("SecondOne", parent=Product, label="modello")
-from importlib import import_module, reload
-reload(import_module(settings.ROOT_URLCONF))
