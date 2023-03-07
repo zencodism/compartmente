@@ -12,6 +12,13 @@ class Site(models.Model):
     def __str__(self):
         return f"Site: {self.name}"
 
+class Staff(models.Model):
+    name = models.CharField(max_length=200)
+    site = models.ForeignKey('modello.Site', on_delete=models.CASCADE)
+    def __str__(self):
+        return f"Staff: {self.name}"
+
+
 class Tenant(models.Model):
     name = models.CharField(max_length=200)
     active = models.BooleanField(default=False)

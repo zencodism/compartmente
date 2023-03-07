@@ -3,7 +3,7 @@ from django.apps import apps
 from django.db import connection
 
 def create_model(
-    name, parent, label="modello", options=None, admin_opts=None
+    name, parent, label="modello", target=None, options=None, admin_opts=None
 ):
 
     table_name = f"{label}_{name}".lower()
@@ -33,6 +33,12 @@ def create_model(
 
     # Create the class, which automatically triggers ModelBase processing
     model = type(name, (parent,), attrs)
+    for f in model._meta.fields:
+        if isinstance(f, models.ForeignKey):
+            if '_ptr' in f.name:
+                continue
+            f.remote_field.model = target
+            f.remote_field.related_name = "rev_" + (f.remote_field.related_query_name or "")
 
     conn = connections["default"]
     editor = conn.schema_editor()
