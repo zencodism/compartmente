@@ -35,6 +35,7 @@ def create_model(
     model = type(name, (parent,), attrs)
     for f in model._meta.fields:
         if isinstance(f, models.ForeignKey):
+            print("ForeignKey-like", f)
             if '_ptr' in f.name:
                 continue
             f.remote_field.model = target

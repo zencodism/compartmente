@@ -18,6 +18,11 @@ class Staff(models.Model):
     def __str__(self):
         return f"Staff: {self.name}"
 
+class Designation(models.Model):
+    name = models.CharField(max_length=200)
+    site = models.ManyToManyField('modello.Site')
+    def __str__(self):
+        return f"Designation: {self.name}"
 
 class Tenant(models.Model):
     name = models.CharField(max_length=200)
