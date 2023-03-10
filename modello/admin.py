@@ -51,7 +51,7 @@ class TenantAdmin(admin.ModelAdmin):
         for model in apps[0]["models"]:
             if model["object_name"] == "Tenant":
                 continue
-            if obj.name in model["name"] and obj.active:
+            if obj.name.lower() in model["name"].lower() and obj.active:
                 continue
             else:
                 try:
