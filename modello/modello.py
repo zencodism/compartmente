@@ -3,6 +3,13 @@ from django.db import connections, models
 from django.apps import apps
 from django.db import connection
 
+class LabeledModel(models.Model):
+    class Meta:
+        abstract=True
+
+    def __str__(self):
+        return f"{self.name} [{self.__classname__}]"
+
 def create_model(
     name, parent, label="modello", target=None, options=None, admin_opts=None
 ):
@@ -15,10 +22,14 @@ def create_model(
     except LookupError:
         pass
 
+    name_parts = name.split('_')
+
     class Meta:
         db_table = table_name
         managed = False
         app_label = label
+        verbose_name = f"{name_parts[1]} [{name_parts[0]}]"
+        verbose_name_plural = f"{name_parts[1]}s [{name_parts[0]}]"
 
     # Update Meta with any options that were provided
     if options is not None:
@@ -33,7 +44,6 @@ def create_model(
     attrs["__str__"] = strfun
 
     for field in parent._meta.fields:
-        print(field)
         if field.name == 'id':
             continue
         #if field.attname in attrs:
@@ -60,9 +70,8 @@ def create_model(
                 rel.model = target
                 attrs[field.name].remote_field = rel
 
-    print("Hello world", attrs)
     # Create the class, which automatically triggers ModelBase processing
-    model = type(name, (models.Model,), attrs)
+    model = type(name, (LabeledModel,), attrs)
 
     conn = connections["default"]
     editor = conn.schema_editor()
